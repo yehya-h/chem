@@ -2,7 +2,7 @@
   "name": "bday",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yehya-h.github.io/birthday-rukia",
+  "homepage": "https://yehya-h.github.io/chem",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
