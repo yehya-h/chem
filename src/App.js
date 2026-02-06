@@ -146,11 +146,11 @@ export default function App() {
       ) : (
         <div className="final">
           <h2>🎉 HAPPY BIRTHDAY RUKIA 🎉</h2>
-          <img src="/birthday.gif" alt="birthday gif" />
+          <img src={process.env.PUBLIC_URL + "/birthday.gif"} alt="birthday gif" />
         </div>
       )}
 
-      <audio ref={audioRef} src="/birthday.mp3" />
+      <audio ref={audioRef} src={process.env.PUBLIC_URL + "/birthday.mp3"} />
     </div>
   );
 }
