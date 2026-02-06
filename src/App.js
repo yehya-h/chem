@@ -52,49 +52,96 @@ export default function App() {
 
   const audioRef = useRef(null);
 
+  // const revealLetters = () => {
+  //   setRevealed((prev) => {
+  //     // only letters that are NOT spaces and NOT revealed
+  //     const remaining = PHRASE.split("")
+  //       .map((c, i) => (c !== " " ? i : null))
+  //       .filter((i) => i !== null && !prev.includes(i));
+
+  //     const amountToReveal = Math.min(3, remaining.length);
+  //     const newLetters = shuffle(remaining).slice(0, amountToReveal);
+
+  //     const updated = [...prev, ...newLetters];
+
+  //     if (remaining.length === amountToReveal) {
+  //       setTimeout(() => {
+  //         setCompleted(true);
+  //         audioRef.current?.play();
+  //       }, 800);
+  //     }
+
+  //     return updated;
+  //   });
+  // };
+
+  // const handleAnswer = (option) => {
+  //   if (selected) return;
+
+  //   setSelected(option);
+
+  //   const isCorrect = option === QUESTIONS[index].answer;
+
+  //   setTimeout(() => {
+  //     if (isCorrect) {
+  //       revealLetters();
+
+  //       if (index + 1 < QUESTIONS.length) {
+  //         setIndex(index + 1);
+  //       }
+  //     }
+
+  //     // IMPORTANT: reset selection in BOTH cases
+  //     setSelected(null);
+  //   }, 800);
+  // };
+
   const revealLetters = () => {
-    setRevealed((prev) => {
-      // only letters that are NOT spaces and NOT revealed
-      const remaining = PHRASE.split("")
-        .map((c, i) => (c !== " " ? i : null))
-        .filter((i) => i !== null && !prev.includes(i));
+  setRevealed((prev) => {
+    // only letters that are NOT spaces and NOT revealed
+    const remaining = PHRASE.split("")
+      .map((c, i) => (c !== " " ? i : null))
+      .filter((i) => i !== null && !prev.includes(i));
 
-      const amountToReveal = Math.min(3, remaining.length);
-      const newLetters = shuffle(remaining).slice(0, amountToReveal);
+    const amountToReveal = Math.min(3, remaining.length);
+    const newLetters = shuffle(remaining).slice(0, amountToReveal);
 
-      const updated = [...prev, ...newLetters];
+    const updated = [...prev, ...newLetters];
 
-      if (remaining.length === amountToReveal) {
-        setTimeout(() => {
-          setCompleted(true);
-          audioRef.current?.play();
-        }, 800);
+    // Check if this is the final reveal (all letters except spaces)
+    const lettersOnlyCount = PHRASE.replace(/ /g, "").length;
+    if (updated.length >= lettersOnlyCount) {
+      setCompleted(true);
+
+      // Play audio directly on user click
+      audioRef.current?.play();
+    }
+
+    return updated;
+  });
+};
+
+const handleAnswer = (option) => {
+  if (selected) return;
+
+  setSelected(option);
+
+  const isCorrect = option === QUESTIONS[index].answer;
+
+  setTimeout(() => {
+    if (isCorrect) {
+      revealLetters();
+
+      if (index + 1 < QUESTIONS.length) {
+        setIndex(index + 1);
       }
+    }
 
-      return updated;
-    });
-  };
+    // reset selection in BOTH cases
+    setSelected(null);
+  }, 300); // shorter timeout to make it feel responsive
+};
 
-  const handleAnswer = (option) => {
-    if (selected) return;
-
-    setSelected(option);
-
-    const isCorrect = option === QUESTIONS[index].answer;
-
-    setTimeout(() => {
-      if (isCorrect) {
-        revealLetters();
-
-        if (index + 1 < QUESTIONS.length) {
-          setIndex(index + 1);
-        }
-      }
-
-      // IMPORTANT: reset selection in BOTH cases
-      setSelected(null);
-    }, 800);
-  };
 
   useEffect(() => {
     if (revealed.length >= PHRASE.length) {
